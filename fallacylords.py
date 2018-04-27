@@ -5,6 +5,11 @@ import urllib.request
 import re
 from praw_info import client_id, client_secret, username, password, user_agent
 
+open('fallacylords.txt', 'w') as f:
+f.close()
+open('trashyscore.txt', 'w') as f:
+f.close()
+
 sauce = urllib.request.urlopen('https://en.wikipedia.org/wiki/List_of_fallacies').read()
 soup = BeautifulSoup(sauce, 'lxml')
 
