@@ -33,27 +33,28 @@ for line in soup.find_all('li'):
 fallacies = [x for x in fallacies[12:148] if x != 'None']
 
 
-def find_fallacy():
-    authors = []
-    for submission in reddit.subreddit('debatereligion').new(limit=10):
-
-        submission.comments.replace_more()
-
-        for comment in submission.comments.list():
-            for fallacy in fallacies:
-                # if re.search(fallacy, comment.body, re.IGNORECASE):     - another way to look for the word in the comment
-                if fallacy.lower() in comment.body.lower():
-                    authors.append(comment.author)
-                    # print(comment.body)
-    return authors
-
-dirty_dic = {}
-fallacy_lords = {}
-fallacious_authors = find_fallacy()
-
-
 if __name__ == '__main__':
     while True:
+        def find_fallacy():
+            authors = []
+            for submission in reddit.subreddit('debatereligion').new(limit=10):
+
+                submission.comments.replace_more()
+
+                for comment in submission.comments.list():
+                    for fallacy in fallacies:
+                        # if re.search(fallacy, comment.body, re.IGNORECASE):     - another way to look for the word in the comment
+                        if fallacy.lower() in comment.body.lower():
+                            authors.append(comment.author)
+                            # print(comment.body)
+            return authors
+
+        dirty_dic = {}
+        fallacy_lords = {}
+        fallacious_authors = find_fallacy()
+
+
+
         for author in fallacious_authors:
             dirty_count = 0
             sub_count = 0
@@ -69,11 +70,11 @@ if __name__ == '__main__':
                             dirty = True
                             dirty_dic[author][0][comment.id] = [comment.body]
                             calc += 1
-                            dirty_dic[author][0][comment.id].append(calc)          #this can be used to store the dirty count
-                        else:                                                      #in every comment.
+                            dirty_dic[author][0][comment.id].append(calc)
+                        else:
                             dirty = True
                             calc += 1
-                            dirty_dic[author][0][comment.id].append(calc) 
+                            dirty_dic[author][0][comment.id].append(calc)
                 if dirty:
                     dirty_dic[author][1] += 1
                     dirty_count += 1
